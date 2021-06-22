@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/pageOne">
+
+    <fragment
+        android:id="@+id/pageOne"
+        android:name="com.chinlung.testimageview.fragment.PageOne"
+        android:label="fragment_page_one"
+        tools:layout="@layout/fragment_page_one" >
+        <action
+            android:id="@+id/action_pageOne_to_pageTwo"
+            app:destination="@id/pageTwo" />
+    </fragment>
+    <fragment
+        android:id="@+id/pageTwo"
+        android:name="com.chinlung.testimageview.fragment.PageTwo"
+        android:label="fragment_page_two"
+        tools:layout="@layout/fragment_page_two" >
+        <action
+            android:id="@+id/action_pageTwo_to_pageThree"
+            app:destination="@id/pageThree" />
+    </fragment>
+    <fragment
+        android:id="@+id/pageThree"
+        android:name="com.chinlung.testimageview.fragment.PageThree"
+        android:label="fragment_page_three"
+        tools:layout="@layout/fragment_page_three" />
+</navigation>
