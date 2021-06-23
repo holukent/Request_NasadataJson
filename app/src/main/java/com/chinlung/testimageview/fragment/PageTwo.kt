@@ -1,7 +1,9 @@
 package com.chinlung.testimageview.fragment
 
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -21,6 +23,10 @@ class PageTwo : Fragment() {
     private lateinit var binding: FragmentPageTwoBinding
     lateinit var mAdapter: MyListAdapter
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -32,14 +38,14 @@ class PageTwo : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
+
         viewModel.setFilesList(requireContext())
 
         binding.apply {
-            viewModelPageTwo = viewModel
             lifecycleOwner = viewLifecycleOwner
         }
 
-        mAdapter = MyListAdapter()
+        mAdapter = MyListAdapter(viewModel)
 
         binding.pagetwoRecycleView.apply {
             this.layoutManager = GridLayoutManager(requireContext(), 4)
@@ -50,12 +56,15 @@ class PageTwo : Fragment() {
 
         viewModel.list.observe(viewLifecycleOwner) {
             if (viewModel.getRecyclerViewState("recyclerview") == null) {
+
                 if (viewModel.filelist.value!!.isEmpty()) {
                     viewModel.updateList(requireContext())
-                }else {
-                    Log.d("sizeasf","${viewModel.filelist.value!!.size}")
-                    viewModel.updateList(requireContext(),range =
-                    viewModel.filelist.value!!.size)
+                } else {
+                    viewModel.updateList(
+                        requireContext(), range =
+                        viewModel.filelist.value!!.size
+                    )
+
                 }
 
             } else {
@@ -63,7 +72,6 @@ class PageTwo : Fragment() {
                     viewModel.getRecyclerViewState("recyclerview")
                 )
             }
-
         }
 
         viewModel.loading.observe(viewLifecycleOwner) {
@@ -72,7 +80,6 @@ class PageTwo : Fragment() {
 
         viewModel.sublist.observe(viewLifecycleOwner) {
             mAdapter.submitList(viewModel.sublist.value)
-            binding.pagetwoRecycleView.scrollToPosition(viewModel.sublist.value!!.lastIndex)
         }
 
 
@@ -80,14 +87,12 @@ class PageTwo : Fragment() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 if (newState == 0) {
                     val mLayoutManager = (recyclerView.layoutManager as GridLayoutManager)
-                    if (mLayoutManager.findLastVisibleItemPosition() == mLayoutManager.itemCount -1){
-                        viewModel.updateList(requireContext(),16)
+                    if (mLayoutManager.findLastVisibleItemPosition() == mLayoutManager.itemCount - 1) {
+                        viewModel.updateList(requireContext(), 32)
                     }
                 }
             }
-
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-
             }
         })
     }

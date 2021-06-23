@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Parcelable
-import android.util.Log
 import androidx.lifecycle.*
 import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
@@ -15,8 +14,6 @@ import org.json.JSONArray
 import java.io.File
 import java.io.FileOutputStream
 import java.net.URL
-import kotlin.concurrent.thread
-
 
 class ViewModels(private val savedStateHandle: SavedStateHandle) : ViewModel() {
 
@@ -56,6 +53,7 @@ class ViewModels(private val savedStateHandle: SavedStateHandle) : ViewModel() {
                                 array.getJSONObject(i).getString("date"),
                                 array.getJSONObject(i).getString("title"),
                                 array.getJSONObject(i).getString("url"),
+                                array.getJSONObject(i).getString("description"),
                             )
                         )
                     }
@@ -72,10 +70,8 @@ class ViewModels(private val savedStateHandle: SavedStateHandle) : ViewModel() {
         _filelist.value = context.fileList().toList()
     }
 
-    fun updateList(
-        context: Context,
-        range: Int = 32
-    ) {
+    fun updateList(context: Context, range: Int = 32)
+    {
         viewModelScope.launch(Dispatchers.Main) {
             if (loading.value == false) {
                 _loading.value = true
@@ -93,18 +89,24 @@ class ViewModels(private val savedStateHandle: SavedStateHandle) : ViewModel() {
         }
     }
 
-    fun downloadimg(context: Context, nasaDataItem: NasaDataItem?) =
+
+    fun downloadimg(context: Context, nasaDataItem: NasaDataItem?,quality:Int = 10) =
         viewModelScope.launch(Dispatchers.IO) {
+            if (filterImage()) return@launch
             URL(nasaDataItem?.url).openStream()
                 .use { inputStream ->
-                    FileOutputStream(File(context.filesDir, "${nasaDataItem?.date}.jpg"))
+                    FileOutputStream(File(context.filesDir, "${nasaDataItem?.date}($quality).jpg"))
                         .use { fileOutputStream ->
                             BitmapFactory.decodeStream(inputStream).compress(
-                                Bitmap.CompressFormat.JPEG, 1, fileOutputStream
+                                Bitmap.CompressFormat.JPEG, quality, fileOutputStream
                             )
                         }
                 }
         }
+
+    fun filterImage():Boolean {
+        return  true
+    }
 
 
     fun saveRecyclerView(str: String, onSaveInstanceState: Parcelable?) {
@@ -114,7 +116,6 @@ class ViewModels(private val savedStateHandle: SavedStateHandle) : ViewModel() {
     fun getRecyclerViewState(str: String): Parcelable? {
         return savedStateHandle[str]
     }
-
 }
 
 

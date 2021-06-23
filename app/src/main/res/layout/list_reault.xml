@@ -9,9 +9,6 @@
             name="nasaDataItem"
             type="com.chinlung.testimageview.model.NasaDataItem" />
 
-        <variable
-            name="viewModel"
-            type="com.chinlung.testimageview.ViewModels" />
     </data>
 
 

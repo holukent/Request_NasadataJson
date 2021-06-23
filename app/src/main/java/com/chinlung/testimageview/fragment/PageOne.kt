@@ -22,7 +22,8 @@ class PageOne : Fragment(R.layout.fragment_page_one) {
         )
 
         view.findViewById<Button>(R.id.btn_nextPage).setOnClickListener {
-            findNavController().navigate(R.id.action_pageOne_to_pageTwo)
+
+            findNavController().navigate(PageOneDirections.actionPageOneToPageTwo())
         }
     }
 }

@@ -3,15 +3,15 @@ package com.chinlung.testimageview
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.chinlung.testimageview.databinding.ListReaultBinding
+import com.chinlung.testimageview.fragment.PageTwoDirections
 import com.chinlung.testimageview.model.NasaDataItem
 
-class MyListAdapter(
-
-) :
+class MyListAdapter(val viewModel: ViewModels) :
     ListAdapter<NasaDataItem, MyListAdapter.ItemViewHolder>(NasaItemDiffCallback) {
 
     class ItemViewHolder(private val binding: ListReaultBinding) :
@@ -36,6 +36,13 @@ class MyListAdapter(
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         holder.bind(getItem(position))
+        holder.itemView.setOnClickListener {
+            it.findNavController().navigate(
+                PageTwoDirections.actionPageTwoToPageThree(
+                    nasasataitem = getItem(position)!!
+                )
+            )
+        }
 //        viewModel.download(holder.itemView.context, getItem(position))
     }
 
