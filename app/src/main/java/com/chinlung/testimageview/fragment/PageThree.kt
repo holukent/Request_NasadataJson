@@ -51,7 +51,7 @@ class PageThree : Fragment(R.layout.fragment_page_three) {
 
         lifecycleScope.launch(Dispatchers.Main) {
             binding.pageThreeProgress.visibility = View.VISIBLE
-            viewModels.downloadimg(requireContext(), nasaDataItem, 100).join()
+            viewModels.downLoadimg(requireContext(), nasaDataItem, 100).join()
             binding.pageThreeProgress.visibility = View.GONE
             binding.pageThreeImage.setImageURI(
                 Uri.parse("file://${requireActivity().filesDir}/${nasaDataItem.date}.jpg")

@@ -24,7 +24,6 @@ class ViewModels(private val savedStateHandle: SavedStateHandle) : ViewModel() {
     private var _sublist: MutableLiveData<List<NasaDataItem>> = MutableLiveData()
     val sublist: LiveData<List<NasaDataItem>> get() = _sublist
 
-
     private var _loading: MutableLiveData<Boolean> = MutableLiveData()
     val loading: LiveData<Boolean> get() = _loading
 
@@ -76,7 +75,7 @@ class ViewModels(private val savedStateHandle: SavedStateHandle) : ViewModel() {
                 (sublist.value!!.size..sublist.value!!.size + range).forEach {
 
                     if (!fileList.value!!.contains("${list.value!![it].date}.jpg")) {
-                        downloadimg(context, list.value!![it]).join()
+                        downLoadimg(context, list.value!![it]).join()
                     }
                     _sublist.value = list.value!!.subList(0, it)
                 }
@@ -87,7 +86,7 @@ class ViewModels(private val savedStateHandle: SavedStateHandle) : ViewModel() {
     }
 
 
-    fun downloadimg(context: Context, nasaDataItem: NasaDataItem?, quality: Int = 10) =
+    fun downLoadimg(context: Context, nasaDataItem: NasaDataItem?, quality: Int = 10) =
         viewModelScope.launch(Dispatchers.IO) {
             URL(nasaDataItem?.url).openStream()
                 .use { inputStream ->
@@ -100,11 +99,11 @@ class ViewModels(private val savedStateHandle: SavedStateHandle) : ViewModel() {
                 }
         }
 
-
+    //保存RecyclerView
     fun saveRecyclerView(str: String, onSaveInstanceState: Parcelable?) {
         savedStateHandle[str] = onSaveInstanceState
     }
-
+    //讀取RecyclerView
     fun getRecyclerViewState(str: String): Parcelable? {
         return savedStateHandle[str]
     }

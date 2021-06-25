@@ -12,10 +12,7 @@ import java.util.*
 
 class MainActivity : AppCompatActivity() {
     companion object{
-        const val NASADATA = "https://raw.githubusercontent.com/cmmobile/NasaDataSet/main/apod.json"
     }
-
-    val myViewModels:ViewModels by viewModels()
 
     private lateinit var navController: NavController
 
