@@ -31,6 +31,9 @@ class ViewModels(private val savedStateHandle: SavedStateHandle) : ViewModel() {
     private var _filelist: MutableLiveData<List<String>> = MutableLiveData()
     val filelist: LiveData<List<String>> get() = _filelist
 
+    val test:LiveData<Int> = Transformations.switchMap(filelist){
+        MutableLiveData(filelist.value?.size ?: 0)
+    }
 
 
     init {
@@ -66,19 +69,18 @@ class ViewModels(private val savedStateHandle: SavedStateHandle) : ViewModel() {
         }
     }
 
+
     fun setFilesList(context: Context) {
         _filelist.value = context.fileList().toList()
     }
 
-    fun updateList(context: Context, range: Int = 32)
-    {
+    fun updateList(context: Context, range: Int = 32) {
         viewModelScope.launch(Dispatchers.Main) {
             if (loading.value == false) {
                 _loading.value = true
                 (sublist.value!!.size..sublist.value!!.size + range).forEach {
 
                     if (!filelist.value!!.contains("${list.value!![it].date}.jpg")) {
-
                         downloadimg(context, list.value!![it]).join()
                     }
                     _sublist.value = list.value!!.subList(0, it)
@@ -90,12 +92,11 @@ class ViewModels(private val savedStateHandle: SavedStateHandle) : ViewModel() {
     }
 
 
-    fun downloadimg(context: Context, nasaDataItem: NasaDataItem?,quality:Int = 10) =
+    fun downloadimg(context: Context, nasaDataItem: NasaDataItem?, quality: Int = 10) =
         viewModelScope.launch(Dispatchers.IO) {
-            if (filterImage()) return@launch
             URL(nasaDataItem?.url).openStream()
                 .use { inputStream ->
-                    FileOutputStream(File(context.filesDir, "${nasaDataItem?.date}($quality).jpg"))
+                    FileOutputStream(File(context.filesDir, "${nasaDataItem?.date}.jpg"))
                         .use { fileOutputStream ->
                             BitmapFactory.decodeStream(inputStream).compress(
                                 Bitmap.CompressFormat.JPEG, quality, fileOutputStream
@@ -103,10 +104,6 @@ class ViewModels(private val savedStateHandle: SavedStateHandle) : ViewModel() {
                         }
                 }
         }
-
-    fun filterImage():Boolean {
-        return  true
-    }
 
 
     fun saveRecyclerView(str: String, onSaveInstanceState: Parcelable?) {
@@ -116,6 +113,8 @@ class ViewModels(private val savedStateHandle: SavedStateHandle) : ViewModel() {
     fun getRecyclerViewState(str: String): Parcelable? {
         return savedStateHandle[str]
     }
+
+
 }
 
 

@@ -20,13 +20,13 @@ import kotlinx.coroutines.launch
 class PageThree : Fragment(R.layout.fragment_page_three) {
 
     lateinit var binding: FragmentPageThreeBinding
+
     val viewModels: ViewModels by activityViewModels()
 
     lateinit var nasaDataItem: NasaDataItem
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         arguments?.let {
             nasaDataItem = it.getParcelable("nasasataitem")!!
         }
@@ -54,8 +54,9 @@ class PageThree : Fragment(R.layout.fragment_page_three) {
             viewModels.downloadimg(requireContext(), nasaDataItem, 100).join()
             binding.pageThreeProgress.visibility = View.GONE
             binding.pageThreeImage.setImageURI(
-                Uri.parse("file:///data/data/com.chinlung.testimageview/files/${nasaDataItem.date}.jpg")
+                Uri.parse("file://${requireActivity().filesDir}/${nasaDataItem.date}.jpg")
             )
         }
+
     }
 }

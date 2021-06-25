@@ -9,6 +9,7 @@ import com.chinlung.testimageview.model.NasaDataItem
 
 @BindingAdapter(value = ["setImage"])
 fun setImage(imageView: ImageView, nasaDataItem: NasaDataItem) {
+
     imageView.setImageBitmap(null)
     imageView.setImageURI(
         Uri.parse("file:///data/data/com.chinlung.testimageview/files/${nasaDataItem.date}.jpg")

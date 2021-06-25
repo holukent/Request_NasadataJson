@@ -1,13 +1,11 @@
 package com.chinlung.testimageview.fragment
 
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
@@ -19,13 +17,11 @@ import com.chinlung.testimageview.ViewModels
 
 
 class PageTwo : Fragment() {
+
     private val viewModel: ViewModels by activityViewModels()
     private lateinit var binding: FragmentPageTwoBinding
     lateinit var mAdapter: MyListAdapter
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,12 +34,16 @@ class PageTwo : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-
         viewModel.setFilesList(requireContext())
 
-        binding.apply {
-            lifecycleOwner = viewLifecycleOwner
+
+        viewModel.test.observe(viewLifecycleOwner) {
+            Toast.makeText(requireContext(),"${viewModel.test.value}", Toast.LENGTH_SHORT).show()
         }
+
+
+        binding.lifecycleOwner = viewLifecycleOwner
+
 
         mAdapter = MyListAdapter(viewModel)
 
@@ -92,6 +92,7 @@ class PageTwo : Fragment() {
                     }
                 }
             }
+
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
             }
         })
