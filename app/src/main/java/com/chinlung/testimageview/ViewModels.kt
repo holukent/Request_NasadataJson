@@ -31,11 +31,6 @@ class ViewModels(private val savedStateHandle: SavedStateHandle) : ViewModel() {
     private var _filelist: MutableLiveData<List<String>> = MutableLiveData()
     val fileList: LiveData<List<String>> get() = _filelist
 
-    val test:LiveData<Int> = Transformations.switchMap(fileList){
-        MutableLiveData(fileList.value?.size ?: 0)
-    }
-
-
     init {
         _loading.value = false
         _sublist.value = listOf()
