@@ -21,7 +21,7 @@ class PageThree : Fragment(R.layout.fragment_page_three) {
 
     lateinit var binding: FragmentPageThreeBinding
 
-    val viewModels: ViewModels by activityViewModels()
+    private val viewModels: ViewModels by activityViewModels()
 
     lateinit var nasaDataItem: NasaDataItem
 

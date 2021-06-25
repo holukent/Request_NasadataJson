@@ -23,8 +23,6 @@ class PageOne : Fragment(R.layout.fragment_page_one) {
         viewModel.getRequest(requireContext(),MainActivity.NASADATA)
 
 
-
-
         view.findViewById<Button>(R.id.btn_nextPage).setOnClickListener {
             findNavController().navigate(PageOneDirections.actionPageOneToPageTwo())
         }

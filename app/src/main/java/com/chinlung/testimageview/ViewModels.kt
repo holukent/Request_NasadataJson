@@ -29,10 +29,10 @@ class ViewModels(private val savedStateHandle: SavedStateHandle) : ViewModel() {
     val loading: LiveData<Boolean> get() = _loading
 
     private var _filelist: MutableLiveData<List<String>> = MutableLiveData()
-    val filelist: LiveData<List<String>> get() = _filelist
+    val fileList: LiveData<List<String>> get() = _filelist
 
-    val test:LiveData<Int> = Transformations.switchMap(filelist){
-        MutableLiveData(filelist.value?.size ?: 0)
+    val test:LiveData<Int> = Transformations.switchMap(fileList){
+        MutableLiveData(fileList.value?.size ?: 0)
     }
 
 
@@ -80,7 +80,7 @@ class ViewModels(private val savedStateHandle: SavedStateHandle) : ViewModel() {
                 _loading.value = true
                 (sublist.value!!.size..sublist.value!!.size + range).forEach {
 
-                    if (!filelist.value!!.contains("${list.value!![it].date}.jpg")) {
+                    if (!fileList.value!!.contains("${list.value!![it].date}.jpg")) {
                         downloadimg(context, list.value!![it]).join()
                     }
                     _sublist.value = list.value!!.subList(0, it)

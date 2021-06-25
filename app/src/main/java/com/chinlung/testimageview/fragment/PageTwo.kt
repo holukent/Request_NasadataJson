@@ -5,7 +5,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
@@ -36,16 +35,10 @@ class PageTwo : Fragment() {
 
         viewModel.setFilesList(requireContext())
 
-
-        viewModel.test.observe(viewLifecycleOwner) {
-            Toast.makeText(requireContext(),"${viewModel.test.value}", Toast.LENGTH_SHORT).show()
-        }
-
-
         binding.lifecycleOwner = viewLifecycleOwner
 
 
-        mAdapter = MyListAdapter(viewModel)
+        mAdapter = MyListAdapter()
 
         binding.pagetwoRecycleView.apply {
             this.layoutManager = GridLayoutManager(requireContext(), 4)
@@ -57,12 +50,12 @@ class PageTwo : Fragment() {
         viewModel.list.observe(viewLifecycleOwner) {
             if (viewModel.getRecyclerViewState("recyclerview") == null) {
 
-                if (viewModel.filelist.value!!.isEmpty()) {
+                if (viewModel.fileList.value!!.isEmpty()) {
                     viewModel.updateList(requireContext())
                 } else {
                     viewModel.updateList(
-                        requireContext(), range =
-                        viewModel.filelist.value!!.size
+                        requireContext(),
+                        viewModel.fileList.value!!.size
                     )
 
                 }

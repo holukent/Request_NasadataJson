@@ -11,7 +11,7 @@ import com.chinlung.testimageview.databinding.ListReaultBinding
 import com.chinlung.testimageview.fragment.PageTwoDirections
 import com.chinlung.testimageview.model.NasaDataItem
 
-class MyListAdapter(val viewModel: ViewModels) :
+class MyListAdapter() :
     ListAdapter<NasaDataItem, MyListAdapter.ItemViewHolder>(NasaItemDiffCallback) {
 
     class ItemViewHolder(private val binding: ListReaultBinding) :
@@ -36,6 +36,7 @@ class MyListAdapter(val viewModel: ViewModels) :
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         holder.bind(getItem(position))
+
         holder.itemView.setOnClickListener {
             it.findNavController().navigate(
                 PageTwoDirections.actionPageTwoToPageThree(
@@ -43,7 +44,6 @@ class MyListAdapter(val viewModel: ViewModels) :
                 )
             )
         }
-//        viewModel.download(holder.itemView.context, getItem(position))
     }
 
 
